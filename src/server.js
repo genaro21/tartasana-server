@@ -12,6 +12,8 @@ server.set("port", 4500);
 //Middlewares
 server.use(cors());
 server.use(morgan("dev"));
+server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
 
 //Routes
 server.use("/api/user", routes.user);
