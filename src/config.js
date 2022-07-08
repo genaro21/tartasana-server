@@ -1,9 +1,10 @@
 const config = {
+  imageFolder: "./src/statics",
   database: {
     url: "mongodb://localhost/tartas",
   },
-  json: {
-    secret: "loquesea",
+  jwt: {
+    secret: "62c82650c0517a7d8ec01ac2",
   },
 };
 
