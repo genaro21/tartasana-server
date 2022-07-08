@@ -6,22 +6,25 @@ const signIn = (req, res) => {
 };
 const signUp = async (req, res) => {
   try {
-    const { file, firstname, lastname, phone, email, password } = req.body;
+    const { firstname, lastname, phone, email, password } = req.body;
+    const file = req.file;
+    console.log({ file });
+    return res.json({ msg: "User crested" });
 
-    const hash = await utils.bcrypt.encrypt(password);
+    // const hash = await utils.bcrypt.encrypt(password);
 
-    const user = {
-      avatar: "avatar",
-      firstname,
-      lastname,
-      phone,
-      email,
-      password: hash,
-    };
+    // const user = {
+    //   avatar: "avatar",
+    //   firstname,
+    //   lastname,
+    //   phone,
+    //   email,
+    //   password: hash,
+    // };
 
-    const data = await models.user.create(user);
+    // const data = await models.user.create(user);
 
-    return res.status(201).json({ data });
+    // return res.status(201).json({ data });
   } catch (err) {
     return res.json({ err });
   }
