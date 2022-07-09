@@ -5,7 +5,7 @@ const config = require("../config");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, config.imageFolder);
+    cb(null, "./src/statics/img/user");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + ".jpg");
@@ -14,9 +14,9 @@ const storage = multer.diskStorage({
 
 const uploads = multer({
   storage: storage,
-  //   limits: {
-  //     fileSize: 100000,
-  //   },
+  // limits: {
+  //   fileSize: 100000,
+  // },
 });
 
 const router = Router();

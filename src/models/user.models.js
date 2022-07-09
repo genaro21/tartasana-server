@@ -27,6 +27,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    admin: {
+      type: String,
+      default: false,
+    },
   },
   {
     versionKey: false,

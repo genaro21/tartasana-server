@@ -1,7 +1,22 @@
 const models = require("../models");
 
-const upload = (req, res) => {
-  return res.json("Upload");
+const upload = async (req, res) => {
+  try {
+    const { title, category, description } = req.body;
+    console.log({ title, category, description });
+    const file = req.file;
+    console.log({ file });
+
+    const cake = await models.cake.create({
+      image: file.filename,
+      title,
+      category,
+      description,
+    });
+    return res.json({ cake });
+  } catch (err) {
+    return res.json({ err: err.mesage });
+  }
 };
 const recentUpload = (req, res) => {
   return res.json("Recent Upload");
@@ -21,6 +36,9 @@ const remove = (req, res) => {
 const like = (req, res) => {
   return res.json("like cake");
 };
+const view = (req, res) => {
+  return res.json("view cake");
+};
 
 module.exports = {
   upload,
@@ -30,4 +48,5 @@ module.exports = {
   details,
   remove,
   like,
+  view,
 };
