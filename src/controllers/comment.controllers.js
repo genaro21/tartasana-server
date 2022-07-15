@@ -1,7 +1,15 @@
 const models = require("../models");
 
-const lastestComments = (req, res) => {
-  return res.json("lastest comments");
+const lastestComments = async (req, res) => {
+  try {
+    const uploads = await models.comment
+      .find()
+      .sort({ createdAt: "desc" })
+      .limit(5);
+    return res.json({ uploads });
+  } catch (err) {
+    return res.json({ msg: err.message });
+  }
 };
 const create = async (req, res) => {
   try {
@@ -27,8 +35,18 @@ const create = async (req, res) => {
     res.json({ err: err.mesage });
   }
 };
-const remove = (req, res) => {
-  return res.json("remove comment");
+const remove = async (req, res) => {
+  try {
+    const { commentId } = req.body;
+    const comment = await models.comment.findById(commentId);
+    if (!comment) {
+      return res.json("El comentario no existe");
+    }
+    const data = await models.comment.findByIdAndDelete(commentId);
+    return res.json({ data });
+  } catch (err) {
+    res.json({ err: err.mesage });
+  }
 };
 
 module.exports = {

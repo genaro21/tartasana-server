@@ -1,6 +1,7 @@
 const models = require("../models");
 const fs = require("fs/promises");
 const path = require("path");
+const { cake } = require(".");
 
 const upload = async (req, res) => {
   try {
@@ -21,20 +22,70 @@ const upload = async (req, res) => {
   }
 };
 
-const recentUpload = (req, res) => {
-  return res.json("Recent Upload");
+const recentUpload = async (req, res) => {
+  try {
+    const uploads = await models.cake
+      .find()
+      .sort({ createdAt: "desc" })
+      .limit(8);
+    return res.json({ uploads });
+  } catch (err) {
+    return res.json({ msg: err.message });
+  }
 };
 
-const stats = (req, res) => {
-  return res.json("Stats");
+const stats = async (req, res) => {
+  try {
+    const cakes = await models.cake.countDocuments();
+    const comments = await models.comment.countDocuments();
+    const views = await models.cake.aggregate([
+      {
+        $group: {
+          _id: "1",
+          viewsTotal: { $sum: "$views" },
+        },
+      },
+    ]);
+
+    const likes = await models.cake.aggregate([
+      {
+        $group: {
+          _id: "1",
+          likes: { $sum: "$likes" },
+        },
+      },
+    ]);
+    return res.json({
+      cakes,
+      comments,
+      views: views[0].viewsTotal,
+      likes: likes[0].likes,
+    });
+  } catch (err) {
+    return res.json({ err: err.message });
+  }
 };
 
-const mostPopular = (req, res) => {
-  return res.json("Most popular");
+const mostPopular = async (req, res) => {
+  try {
+    const uploads = await models.cake.find().sort({ views: "desc" }).limit(4);
+    return res.json({ uploads });
+  } catch (err) {
+    return res.json({ msg: err.message });
+  }
 };
 
-const details = (req, res) => {
-  return res.json("Details");
+const details = async (req, res) => {
+  try {
+    const { cakeId } = req.body;
+
+    const cake = await models.cake.findById(cakeId);
+    const comments = await models.comment.find({ cake });
+
+    return res.json({ cake, comments });
+  } catch (err) {
+    return res.json({ msg: err.message });
+  }
 };
 
 const remove = async (req, res) => {
@@ -97,6 +148,16 @@ const view = async (req, res) => {
   }
 };
 
+const getCategory = async (req, res) => {
+  try {
+    const category = req.body;
+    const data = await models.cake.find(category);
+    return res.json({ data });
+  } catch (err) {
+    return res.json({ msg: err.message });
+  }
+};
+
 module.exports = {
   upload,
   recentUpload,
@@ -106,4 +167,5 @@ module.exports = {
   remove,
   like,
   view,
+  getCategory,
 };

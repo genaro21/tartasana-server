@@ -26,6 +26,7 @@ router.get("/recentUpload", controllers.cake.recentUpload);
 router.get("/stats", controllers.cake.stats);
 router.get("/mostPopular", controllers.cake.mostPopular);
 router.get("/details/:cakeId", controllers.cake.details);
+router.get("/getCategory", controllers.cake.getCategory);
 router.delete("/remove", controllers.cake.remove);
 router.post("/like", controllers.cake.like);
 router.post("/view", controllers.cake.view);
