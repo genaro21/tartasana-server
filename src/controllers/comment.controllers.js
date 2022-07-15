@@ -27,8 +27,12 @@ const create = async (req, res) => {
     res.json({ err: err.mesage });
   }
 };
+const remove = (req, res) => {
+  return res.json("remove comment");
+};
 
 module.exports = {
   lastestComments,
   create,
+  remove,
 };
