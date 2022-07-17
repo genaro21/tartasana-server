@@ -1,7 +1,7 @@
 const models = require("../models");
 const fs = require("fs/promises");
 const path = require("path");
-const { cake } = require(".");
+// const { cake } = require(".");
 
 const upload = async (req, res) => {
   try {
