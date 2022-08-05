@@ -22,6 +22,6 @@ server.use("/api/cake", routes.cake);
 server.use("/api/comment", routes.comment);
 
 //Static folder
-server.use(express.static(path.join("__dirname", "statics")));
+server.use(express.static(path.join(__dirname, "statics")));
 
 module.exports = server;

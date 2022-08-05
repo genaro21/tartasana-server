@@ -7,11 +7,12 @@ const upload = async (req, res) => {
   try {
     const { title, category, description } = req.body;
     console.log({ title, category, description });
+    const hostName = "http://localhost:4500/img/cake/";
     const file = req.file;
     console.log({ file });
 
     const cake = await models.cake.create({
-      image: file.filename,
+      image: hostName + file.filename,
       title,
       category,
       description,
@@ -27,7 +28,7 @@ const recentUpload = async (req, res) => {
     const uploads = await models.cake
       .find()
       .sort({ createdAt: "desc" })
-      .limit(8);
+      .limit(12);
     return res.json({ uploads });
   } catch (err) {
     return res.json({ msg: err.message });
@@ -77,7 +78,7 @@ const mostPopular = async (req, res) => {
 
 const details = async (req, res) => {
   try {
-    const { cakeId } = req.body;
+    const { cakeId } = req.params;
 
     const cake = await models.cake.findById(cakeId);
     const comments = await models.comment.find({ cake });

@@ -2,11 +2,27 @@ const models = require("../models");
 
 const lastestComments = async (req, res) => {
   try {
-    const uploads = await models.comment
+    const comments = await models.comment
       .find()
       .sort({ createdAt: "desc" })
       .limit(5);
-    return res.json({ uploads });
+
+    const data = [];
+    for (const comment of comments) {
+      const cake = await models.cake.findById(comment.cake);
+      const user = await models.user.findById(comment.user);
+
+      data.push({
+        comment: {
+          _id: comment._id,
+          description: comment.description,
+          title: comment.title,
+        },
+        cake,
+        user,
+      });
+    }
+    return res.json({ comments: data });
   } catch (err) {
     return res.json({ msg: err.message });
   }

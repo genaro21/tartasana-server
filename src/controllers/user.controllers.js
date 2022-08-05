@@ -19,7 +19,7 @@ const signIn = async (req, res) => {
 
     const token = jwt.sign({ user }, config.jwt.secret);
 
-    return res.json({ token });
+    return res.json({ token, user });
   } catch (err) {
     return res.json({ err: err.message });
   }
@@ -28,9 +28,10 @@ const signIn = async (req, res) => {
 const signUp = async (req, res) => {
   try {
     const { firstName, lastName, phone, email, password } = req.body;
-    const hostname = "http://localhost:4500/";
+    const hostname = "http://localhost:4500/img/user/";
     const hash = await utils.bcrypt.encrypt(password);
     const file = req.file;
+    console.log({ file });
 
     // if (!firstname || !lastname || !phone || !email || !password) {
     //   return res.json("Debes rellenar todos los campos");
