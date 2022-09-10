@@ -81,7 +81,7 @@ const details = async (req, res) => {
     const { cakeId } = req.params;
 
     const cake = await models.cake.findById(cakeId);
-    const comments = await models.comment.find({ cake });
+    const comments = await models.comment.find({ cake }).populate("user");
 
     return res.json({ cake, comments });
   } catch (err) {
@@ -151,8 +151,17 @@ const view = async (req, res) => {
 
 const getCategory = async (req, res) => {
   try {
-    const category = req.body;
+    const category = req.params;
     const data = await models.cake.find(category);
+    return res.json({ data });
+  } catch (err) {
+    return res.json({ msg: err.message });
+  }
+};
+
+const getAll = async (req, res) => {
+  try {
+    const data = await models.cake.find();
     return res.json({ data });
   } catch (err) {
     return res.json({ msg: err.message });
@@ -169,4 +178,5 @@ module.exports = {
   like,
   view,
   getCategory,
+  getAll,
 };
